@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "GhanaPromiseGuardian",
+    "name": "Ghana Promise Guardian",
     "slug": "GhanaPromiseGuardian",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -20,7 +20,8 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.ghfirst.GhanaPromiseGuardian"
     },
     "web": {
       "favicon": "./assets/favicon.png"

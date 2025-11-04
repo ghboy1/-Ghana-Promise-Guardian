@@ -227,7 +227,7 @@ This project is created for educational and civic engagement purposes.
 ## 🙏 Acknowledgments
 
 - Inspired by Ghana's independence movement
-- Built with ❤️ by Ghanaian youth
+- Built with ❤️ by Rauf Husein
 - Powered by Firebase and Expo
 
 ## 📞 Support

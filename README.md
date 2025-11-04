@@ -1,6 +1,6 @@
 # 🇬🇭 Ghana Promise Guardian
 
-A mobile application that empowers Ghanaian citizens to track government promises, report issues, and build community accountability. Inspired by Ghana's independence legacy, this app helps safeguard our nation's future.
+git remote add origin [https://github.com/YOUR-USERNAME/YOUR-REPO-NAME.git](https://github.com/YOUR-USERNAME/YOUR-REPO-NAME.git)A mobile application that empowers Ghanaian citizens to track government promises, report issues, and build community accountability. Inspired by Ghana's independence legacy, this app helps safeguard our nation's futur
 
 ## ✨ Features
 

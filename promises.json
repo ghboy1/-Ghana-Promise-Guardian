@@ -1,0 +1,90 @@
+[
+  {
+    "title": "The Big Push Infrastructure Programme",
+    "description": "Transformative investment in roads, railways, airports, ports, digital infrastructure, and energy",
+    "allocation": "GH¢25.6 billion over 4 years",
+    "status": "launched",
+    "year": "2025",
+    "government": "NDC 2025",
+    "category": "Infrastructure",
+    "impact": "High",
+    "progress": 10
+  },
+  {
+    "title": "24-Hour Economy",
+    "description": "Industrial parks, incentives for night operations, job creation through shift work",
+    "allocation": "GH¢8.5 billion initial fund",
+    "status": "rolling_out",
+    "year": "2025",
+    "government": "NDC 2025",
+    "category": "Economy",
+    "impact": "High",
+    "progress": 5
+  },
+  {
+    "title": "Free Tertiary Education",
+    "description": "No academic fees for Ghanaian students in public universities",
+    "allocation": "GH¢8.2 billion",
+    "status": "launched",
+    "year": "2025",
+    "government": "NDC 2025",
+    "category": "Education",
+    "impact": "High",
+    "progress": 80
+  },
+  {
+    "title": "1 Million Jobs Programme",
+    "description": "Targeted job creation in digital, agriculture, manufacturing, and tourism",
+    "allocation": "GH¢12 billion",
+    "status": "active",
+    "year": "2026",
+    "government": "NDC 2025",
+    "category": "Employment",
+    "impact": "High",
+    "progress": 15
+  },
+  {
+    "title": "Accra-Kumasi Expressway",
+    "description": "Completion of dual carriageway as part of Big Push",
+    "allocation": "Part of GH¢25.6 billion",
+    "status": "under_construction",
+    "year": "2026",
+    "government": "NDC 2025",
+    "category": "Infrastructure",
+    "impact": "High",
+    "progress": 30
+  },
+  {
+    "title": "Digital Ghana Agenda Phase 2",
+    "description": "Free Wi-Fi in schools, digital ID, e-governance expansion",
+    "allocation": "GH¢4.8 billion",
+    "status": "ongoing",
+    "year": "2026",
+    "government": "NDC 2025",
+    "category": "Digital",
+    "impact": "High",
+    "progress": 40
+  },
+  {
+    "title": "Modernising Agriculture",
+    "description": "Mechanisation, irrigation, storage, Planting for Export and Rural Development (PERD)",
+    "allocation": "GH¢6.4 billion",
+    "status": "active",
+    "year": "2026",
+    "government": "NDC 2025",
+    "category": "Agriculture",
+    "impact": "High",
+    "progress": 25
+  },
+  {
+    "title": "Agenda 111 Hospitals Completion",
+    "description": "Full completion of all 111 district hospitals",
+    "allocation": "Fully funded in 2025-2026 budgets",
+    "status": "in_progress",
+    "year": "2025",
+    "government": "NDC 2025",
+    "category": "Health",
+    "impact": "High",
+    "progress": 60
+  }
+]

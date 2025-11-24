@@ -19,7 +19,7 @@ import {
   clearAllPromises,
   reseedAllPromises,
   getDatabaseStats,
-} from '../services/firestore';
+} from '../services/firestore-old';
 import { NDC_2024_PROMISES, NPP_2016_PROMISES } from '../data/manifestoData';
 
 export default function AdminSeedingScreen({ navigation }) {

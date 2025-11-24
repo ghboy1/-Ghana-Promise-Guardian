@@ -1,0 +1,269 @@
+AUTH SYSTEM ARCHITECTURE DIAGRAM
+================================
+
+1. COMPONENT HIERARCHY
+─────────────────────
+
+    App.js (Root)
+    └── <AuthProvider>
+        └── <AppContent>
+            ├── <NavigationContainer>
+            │   └── <Tab.Navigator>
+            │       ├── <HomeScreen>      uses useAuth()
+            │       ├── <DashboardScreen> uses useAuth()
+            │       ├── <ReportScreen>    uses useAuth()
+            │       ├── <MapScreen>       uses useAuth()
+            │       └── <ProfileScreen>   uses useAuth()
+            │
+            └── (all screens can access: currentUser, loading, error, logout)
+
+
+2. INITIALIZATION FLOW
+──────────────────────
+
+    App.js loads
+         ↓
+    AuthProvider mounts
+         ↓
+    useEffect hook fires
+         ↓
+    authService.onAuthStateChanged() called
+         ↓
+    firebase.js checked:
+    ├─ Firebase config valid? ──YES──> Initialize Firebase
+    │                                   │
+    │                                   ↓
+    │                          Call auth.signInAnonymously()
+    │                                   │
+    │                                   ↓
+    │                          Return real user object
+    │
+    └─ Firebase config valid? ──NO──-> Skip Firebase init
+                                       │
+                                       ↓
+                              Return demo user object:
+                              {
+                                uid: 'demo-user-...',
+                                isDemo: true,
+                                email: 'demo@ghanapromise.app'
+                              }
+         ↓
+    currentUser set in context
+         ↓
+    loading = false
+         ↓
+    AppContent renders
+         ↓
+    All screens access auth via useAuth() hook
+         ↓
+    App fully functional!
+
+
+3. FILE DEPENDENCY GRAPH
+────────────────────────
+
+    App.js
+    ├── imports: AuthProvider, useAuth from AuthContext.js
+    │   │
+    │   └── AuthContext.js
+    │       ├── creates: AuthContext, AuthProvider, useAuth
+    │       └── imports: authService from auth.js
+    │           │
+    │           └── auth.js
+    │               ├── defines: AuthService class
+    │               ├── exports: default (singleton instance)
+    │               └── imports: auth from firebase.js
+    │                   │
+    │                   └── firebase.js
+    │                       ├── initializes: Firebase (compat SDK)
+    │                       ├── exports: auth, db, storage, functions
+    │                       └── config: hardcoded or env vars
+    │
+    └── renders: DashboardScreen, HomeScreen, ProfileScreen, etc.
+        │
+        └── each screen:
+            ├── imports: useAuth from AuthContext.js
+            └── calls: const { currentUser, loading } = useAuth()
+
+
+4. DATA FLOW (STATE)
+────────────────────
+
+    Firebase State: auth → (Firebase SDK)
+                              ↓
+    AuthService: this.auth → (accesses Firebase auth)
+                              ↓
+    AuthContext: currentUser → (manages state)
+                  ├─ currentUser { uid, isDemo, email, error }
+                  ├─ loading { boolean }
+                  └─ error { string | null }
+                              ↓
+    Screens: useAuth() → (all screens access same state)
+                  ├─ DashboardScreen ──┐
+                  ├─ HomeScreen ────────┼──> useAuth()
+                  ├─ ProfileScreen ─────┤
+                  ├─ ReportScreen ──────┤
+                  └─ MapScreen ─────────┘
+
+
+5. ERROR HANDLING FLOW
+──────────────────────
+
+    User Action
+        ↓
+    Try Firebase Operation
+        ↓
+    Error occurs?
+    ├─ YES → Catch error
+    │        │
+    │        ├─ Log error to console
+    │        ├─ Return demo user (if login)
+    │        ├─ Continue app normally
+    │        └─ No crash!
+    │
+    └─ NO → Continue normally
+
+
+6. DEMO MODE STATE
+──────────────────
+
+    Demo User Object:
+    {
+      uid: 'demo-user-' + Date.now(),      // Unique per session
+      isDemo: true,                         // Flag for UI
+      email: 'demo@ghanapromise.app',      // Placeholder
+      error: null                           // Error message if any
+    }
+
+    All Firebase Operations Return:
+    ├─ Reports: [] (empty array)
+    ├─ Promises: [] (empty array)
+    ├─ Submit: { success: true, localId: '...' }
+    └─ Errors: Logged to console but app continues
+
+
+7. HOOK USAGE PATTERN
+──────────────────────
+
+    In any component:
+
+    import { useAuth } from '../context/AuthContext';
+
+    function MyComponent() {
+      const {
+        currentUser,        // { uid, isDemo, email, error }
+        loading,           // boolean
+        error,             // string | null
+        logout,            // async () => void
+        loginAnonymously   // async () => user
+      } = useAuth();
+
+      // Use in render/return...
+    }
+
+
+8. SINGLETON PATTERN
+─────────────────────
+
+    auth.js exports:
+    
+    export default new AuthService();  // Single instance
+    
+    Imported as:
+    
+    import authService from '../services/auth';
+    
+    Same instance everywhere:
+    ├─ AuthContext.js gets same authService
+    ├─ DashboardScreen accesses through useAuth()
+    ├─ ProfileScreen accesses through useAuth()
+    └─ All screens share same auth state
+
+
+9. CONTEXT API FLOW
+────────────────────
+
+    App.js wraps all screens:
+    
+    <AuthProvider>
+      <AppContent>
+        <NavigationContainer>
+          <Tab.Navigator>
+            <Screen1 />
+            <Screen2 />
+            etc.
+          </Tab.Navigator>
+        </NavigationContainer>
+      </AppContent>
+    </AuthProvider>
+
+    Result:
+    ├─ AuthContext available to ALL descendants
+    ├─ useAuth() works in any screen
+    ├─ State updates trigger re-renders
+    └─ No prop drilling needed
+
+
+10. TESTING FLOW
+─────────────────
+
+    npm test
+        ↓
+    Runs Jest
+        ↓
+    Loads authService
+        ↓
+    Tests:
+    ├─ createDemoUser() works
+    ├─ loginAnonymously() returns user
+    ├─ onAuthStateChanged() accepts callback
+    └─ Singleton pattern verified
+        ↓
+    All tests pass ✅
+
+
+SUMMARY
+=======
+
+┌─────────────────┐
+│   Your App      │
+│  (Dashboard,    │
+│   Home, etc.)   │
+└────────┬────────┘
+         │ uses
+         ↓
+┌─────────────────┐
+│  useAuth() Hook │
+│  (From Context) │
+└────────┬────────┘
+         │ accesses
+         ↓
+┌─────────────────┐
+│  AuthContext    │
+│  (Global State) │
+└────────┬────────┘
+         │ manages
+         ↓
+┌─────────────────┐
+│  AuthService    │
+│  (Singleton)    │
+└────────┬────────┘
+         │ delegates to
+         ↓
+┌─────────────────┐
+│  firebase.js    │
+│  (Firebase SDK) │
+└────────┬────────┘
+         │
+    ├─ Firebase Available? → YES → Real Auth
+    └─ Firebase Available? → NO  → Demo Mode
+
+
+KEY INSIGHT
+===========
+
+Everything flows through AuthContext.
+AuthContext uses AuthService.
+AuthService uses Firebase (or demo mode).
+All screens access via useAuth() hook.
+Result: Consistent, testable, maintainable auth system!

@@ -10,7 +10,7 @@ import {
   ScrollView,
   ActivityIndicator
 } from 'react-native';
-import { auth } from '../firebase';
+import { getPromises, submitReport } from '../../firebase';;
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,

@@ -11,7 +11,7 @@ import {
   Dimensions,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { auth } from '../firebase';
+import { getPromises, submitReport } from '../../firebase';
 
 const { width } = Dimensions.get('window');
 
